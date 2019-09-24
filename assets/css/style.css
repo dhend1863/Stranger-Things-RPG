@@ -2,13 +2,18 @@
 
 body {
 
-    font-family: 'Shadows Into Light', cursive;
-    font-size: 30px;
+  font-family: 'Permanent Marker', cursive;
+    font-size: 25px;
+    color: white;
+    text-shadow: 
+    -2.5px -2.5px 0 #000;
 
   background-image: url(../images/STLeavingIndiana_Netflix_Ringer.0.webp);
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
+  background-size: cover;
+  width: 100vw;
 
 }
 
