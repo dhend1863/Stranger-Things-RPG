@@ -166,6 +166,66 @@ var     FX = {};
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
     };
-})();
+});
 
-Resources
+$(document).ready(function() {
+    var characters = {
+        "Steve Harrington": {
+            name: "Steve Harrington",
+            health: 100, 
+            attack: 12,
+            imageUrl: "../assets/images/Steve.jpg",
+            enemeyAttackBack: 15
+        },
+        "Billy Hargrove": {
+            name: "Billy Hargrove",
+            health: 110, 
+            attack: 10,
+            imageUrl: "../assets/images/Billy.jpg",
+            enemeyAttackBack: 15
+        },
+        "Eleven": {
+            name: "Eleven",
+            health: 180, 
+            attack: 12,
+            imageUrl: "../assets/images/eleven.jpg",
+            enemeyAttackBack: 5
+        },
+        "Mind Flayer": {
+            name: "Mind Flayer",
+            health: 150, 
+            attack: 10,
+            imageUrl: "../assets/images/mindflayer.jpg",
+            enemeyAttackBack: 25
+        }
+    };
+    console.log(characters);
+
+    var renderOne = function(character, renderArea) {
+        var charDiv = $("<div class='character' data-name='" + character.name + "'>");
+        var charName = $("<div class='character-name'>").text(character.name);
+        var charImage = $("<img alt='image' class='character-image'>").attr("src", character.imageUrl);
+        var charHealth = $("<div class='character-health'>").text(character.health);
+        charDiv.append(charName).append(charImage).append(charHealth);
+        $(renderArea).append(charDiv);
+    
+    }
+
+    var renderCharacters = function(charObj, areaRender) {
+        if (areaRender === "#characters-section") {
+            $(areaRender).empty();
+            for (var key in charObj) {
+                if(charObj.hasOwnProperty(key)) {
+                    renderOne(charObj[key], areaRender);
+                }
+
+            
+            }
+            
+        }
+    
+    }
+
+    renderCharacters(characters, "#characters");
+});
+    
