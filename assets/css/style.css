@@ -133,7 +133,7 @@ body {
   padding: 7px 20px;
   left: 5.5%;
   width: 200px;
-  margin-left: -100px;
+  margin-left: 1000px;
   top: 85%;
   border-radius: 10px;
   color: red;
@@ -165,4 +165,31 @@ outline: 0 !important;
       margin-top: 6px; 
   } 
 }
+
+img {
+  height: 100px;
+  width: 150px;
+  border-radius: 10px;
+}
+
+.character {
+  display: inline-block;
+  border-style: solid;
+  border-color: #ed2b12;
+  border-width: 3px;
+  background-color: black;
+  cursor: pointer;
+}
+
+.character-image {
+  padding-right: 16px;
+  padding-left: 16px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+
+
+}
+
+.character-name { text-align:center;}
+.character-health {text-align: center;}
 
