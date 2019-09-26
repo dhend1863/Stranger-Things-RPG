@@ -57,6 +57,11 @@ $(document).ready(function() {
     }
 
 renderCharacters(characters, "#characters-section");
+
+$(document).on("click", ".character", function() {
+    console.log("This worked");
+})
+
 });
 
 
@@ -235,7 +240,14 @@ var     FX = {};
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
     };
+
+
+
+    
+
+
 });
+
 
 
     
