@@ -35,7 +35,7 @@ $(document).ready(function() {
     var currSelectedCharacter;
     var combatants = [];
 
-    var renderOne = function(character, renderArea) {
+    var renderOne = function(character, renderArea, charStatus) {
         var charDiv = $("<div class='character' data-name='" + character.name + "'>");
         var charName = $("<div class='character-name'>").text(character.name);
         var charImage = $("<img alt='image' class='character-image'>").attr("src", character.imageUrl);
@@ -43,6 +43,9 @@ $(document).ready(function() {
         charDiv.append(charName).append(charImage).append(charHealth);
         $(renderArea).append(charDiv);
     
+        if (charStatus === "enemy") {
+            $(charDiv).addClass("enemy");
+        }
     }
 
     var renderCharacters = function(charObj, areaRender) {
@@ -50,7 +53,7 @@ $(document).ready(function() {
             $(areaRender).empty();
             for (var key in charObj) {
                 if(charObj.hasOwnProperty(key)) {
-                    renderOne(charObj[key], areaRender);
+                    renderOne(charObj[key], areaRender, "");
                 }
 
             
@@ -66,7 +69,7 @@ $(document).ready(function() {
         if (areaRender === "#available-to-attack-section") {
 
             for(var i = 0; i < charObj.length; i++) {
-                renderOne(charObj[i], areaRender);
+                renderOne(charObj[i], areaRender, "enemy");
             }
         }
 
@@ -91,7 +94,7 @@ $(document).ready(function() {
     
         console.log(combatants);
 
-        $("characters-section").hide();
+        $("#characters-section").hide();
 
         renderCharacters(currSelectedCharacter, "#selected-character");
         renderCharacters(combatants, "#available-to-attack-section")
