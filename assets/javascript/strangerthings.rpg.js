@@ -4,29 +4,29 @@ $(document).ready(function() {
     var characters = {
         "Steve Harrington": {
             name: "Steve Harrington",
-            health: 100, 
-            attack: 12,
+            health: 120, 
+            attack: 8,
             imageUrl: "assets/images/Steve.jpg",
             enemeyAttackBack: 15
         },
         "Billy Hargrove": {
             name: "Billy Hargrove",
-            health: 110, 
-            attack: 10,
+            health: 100, 
+            attack: 14,
             imageUrl: "assets/images/Billy.jpg",
-            enemeyAttackBack: 15
+            enemeyAttackBack: 5
         },
         "Eleven": {
             name: "Eleven",
-            health: 180, 
-            attack: 12,
+            health: 150, 
+            attack: 8,
             imageUrl: "assets/images/eleven.jpg",
             enemeyAttackBack: 5
         },
         "Mind Flayer": {
             name: "Mind Flayer",
-            health: 150, 
-            attack: 10,
+            health: 180, 
+            attack: 7,
             imageUrl: "assets/images/mindflayer.jpg",
             enemeyAttackBack: 25
         }
@@ -34,6 +34,9 @@ $(document).ready(function() {
     
     var currSelectedCharacter;
     var combatants = [];
+    var currDefender;
+    var turnCounter = 1;
+    var killCount = 0;
 
     var renderOne = function(character, renderArea, charStatus) {
         var charDiv = $("<div class='character' data-name='" + character.name + "'>");
@@ -45,6 +48,12 @@ $(document).ready(function() {
     
         if (charStatus === "enemy") {
             $(charDiv).addClass("enemy");
+        }
+        else if (charStatus === "defender") {
+
+            currDefender = character;
+            $(charDiv).addClass("target-enemy");
+        
         }
     }
 
@@ -71,9 +80,53 @@ $(document).ready(function() {
             for(var i = 0; i < charObj.length; i++) {
                 renderOne(charObj[i], areaRender, "enemy");
             }
+
+            $(document).on("click", ".enemy", function() {
+                var name = ($(this).attr("data-name"));
+
+                if ($("#defender").children().length === 0) {
+                    renderCharacters(name, "#defender");
+                    $(this).hide();
+                }
+            
+            });
+       
+        
+       
+       
         }
 
-    }
+        // defender div 
+
+        if (areaRender === "#defender") {
+            $(areaRender).empty();
+            for (var i = 0; i < combatants.length; i++) {
+                if(combatants[i].name ===charObj) {
+                    renderOne(combatants[i], areaRender, "defender");
+                
+                }
+
+            }
+        }
+
+        if (areaRender === "playerDamage") {
+            $("#defender").empty();
+            renderOne(charObj, "#defender", "defender");
+
+
+
+        }
+
+        if (areaRender === "enemyDamage") {
+            $("#selected-character").empty();
+            renderOne(charObj, "#selected-character", "");
+        }
+
+        if (areaRender ==="enemyDefeated") {
+            $("#defender").empty()
+        }
+
+    };
 
     renderCharacters(characters, "#characters-section");
 
@@ -101,9 +154,53 @@ $(document).ready(function() {
 
     }
 
- })
+ });
+
+ $("#button").on("click", function() {
+     
+   if ($("#defender").children().length !== 0) {
+       
+        currDefender.health -= (currSelectedCharacter.attack * turnCounter);
+
+        if (currDefender.health > 0) {
+        
+        
+
+            renderCharacters(currDefender, "playerDamage");
+  
+       
+            currSelectedCharacter.health -= currSelectedCharacter.enemeyAttackBack;
+
+            renderCharacters(currSelectedCharacter, "enemyDamage");
+        }
+ 
+
+    }
+
+        else {
+
+        renderCharacters(currDefender, "enemyDefeated");
+
+        killCount++; 
+
+        if (killCount >= 3) {
+
+        }
+   
+   
+    }
+    turnCounter++;
 
 });
+
+ });
+
+
+
+
+
+
+
 
 
 
@@ -280,15 +377,7 @@ var     FX = {};
     function setFullscreen() {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
-    };
-
-
-
     
-
+    }
 
 });
-
-
-
-    
