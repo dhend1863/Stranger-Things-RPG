@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    // Variables Declared//
+    
     var characters = {
         "Steve Harrington": {
             name: "Steve Harrington",
@@ -29,7 +31,9 @@ $(document).ready(function() {
             enemeyAttackBack: 25
         }
     };
-    console.log(characters);
+    
+    var currSelectedCharacter;
+    var combatants = [];
 
     var renderOne = function(character, renderArea) {
         var charDiv = $("<div class='character' data-name='" + character.name + "'>");
@@ -54,13 +58,47 @@ $(document).ready(function() {
             
         }
     
+
+        if (areaRender === "#selected-character") {
+            renderOne(charObj, areaRender);
+        }
+
+        if (areaRender === "#available-to-attack-section") {
+
+            for(var i = 0; i < charObj.length; i++) {
+                renderOne(charObj[i], areaRender);
+            }
+        }
+
     }
 
-renderCharacters(characters, "#characters-section");
+    renderCharacters(characters, "#characters-section");
 
-$(document).on("click", ".character", function() {
-    console.log("This worked");
-})
+    $(document).on("click", ".character", function() {
+    // Saves Click
+    var name = $(this).attr("data-name");
+    console.log(name);
+  
+    if (!currSelectedCharacter) {
+
+        currSelectedCharacter = characters[name];
+
+        for (var key in characters) {
+            if (key !== name) {
+                combatants.push(characters[key]);
+            }
+        }
+    
+        console.log(combatants);
+
+        $("characters-section").hide();
+
+        renderCharacters(currSelectedCharacter, "#selected-character");
+        renderCharacters(combatants, "#available-to-attack-section")
+
+    }
+
+ })
 
 });
 
