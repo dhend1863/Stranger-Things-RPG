@@ -57,6 +57,19 @@ $(document).ready(function() {
         }
     }
 
+    var renderMessage = function(message) {
+
+        var gameMessageSet = $("game-message");
+        var newMessage = $("<div>").text(message);
+        gameMessageSet.append(newMessage);
+
+        if (message === "clearMessage") {
+            gameMessageSet.text("")
+        }
+
+    
+    }
+
     var renderCharacters = function(charObj, areaRender) {
         if (areaRender === "#characters-section") {
             $(areaRender).empty();
@@ -87,12 +100,10 @@ $(document).ready(function() {
                 if ($("#defender").children().length === 0) {
                     renderCharacters(name, "#defender");
                     $(this).hide();
+                    renderMessage("clearMessage");
                 }
             
             });
-       
-        
-       
        
         }
 
@@ -108,25 +119,46 @@ $(document).ready(function() {
 
             }
         }
-
+        // re-render defender when attacked
         if (areaRender === "playerDamage") {
             $("#defender").empty();
+            console.log("Defender Emptied");
             renderOne(charObj, "#defender", "defender");
 
 
 
         }
-
+        // re-render player character 
         if (areaRender === "enemyDamage") {
             $("#selected-character").empty();
             renderOne(charObj, "#selected-character", "");
         }
-
+        // remove defeated character
         if (areaRender ==="enemyDefeated") {
-            $("#defender").empty()
+            $("#defender").empty();
+            console.log("Defender Emptied");
+            var gameStateMessage = "You have defeated " +charObj.name + " , choose another enemy.";
+            renderMessage(gameStateMessage);
         }
 
     };
+
+    var restartGame = function(inputEndGame) {
+
+        var restart = $("<button>Restart</button").click(function() {
+            location.reload();
+        });
+
+        var gameState = $("<div>").text(inputEndGame);
+
+        $("body").append(gameState);
+        $("body").appen(restart);
+   
+    }
+
+
+
+
 
     renderCharacters(characters, "#characters-section");
 
@@ -157,8 +189,12 @@ $(document).ready(function() {
  });
 
  $("#button").on("click", function() {
-     
+     console.log("THIS IS BEING CLICKED");
    if ($("#defender").children().length !== 0) {
+
+    var attackMessage = "You attacked " + currDefender.name + " for " + (currSelectedCharacter.attack * turnCounter) + " damage."
+    var counterAttackMessage = currDefender.name + " attacked you back for " + currDefender.enemeyAttackBack + " damage."
+    renderMessage("clearMessage"); 
        
         currDefender.health -= (currSelectedCharacter.attack * turnCounter);
 
@@ -167,31 +203,44 @@ $(document).ready(function() {
         
 
             renderCharacters(currDefender, "playerDamage");
+
+            renderMessage(attackMessage);
+            renderMessage(counterAttackMessage);
   
        
             currSelectedCharacter.health -= currSelectedCharacter.enemeyAttackBack;
 
             renderCharacters(currSelectedCharacter, "enemyDamage");
+
+            if (currSelectedCharacter.health <= 0) {
+                renderMessage("clearMessage");
+                restartGame("You have been defeated GAME OVER");
+                $("#attack-button").unbind("click");
+            }
+           
         }
- 
+        
 
-    }
+    
 
-        else {
+        else{
 
-        renderCharacters(currDefender, "enemyDefeated");
+            renderCharacters(currDefender, "enemyDefeated");
 
-        killCount++; 
+             killCount++; 
 
-        if (killCount >= 3) {
+            if (killCount >= 3) {
+                renderMessage("clearMessage");
+                restartGame("You won!");
+                
 
         }
    
    
-    }
-    turnCounter++;
+       }
+        turnCounter++;
 
-});
+    }
 
  });
 
@@ -381,3 +430,4 @@ var     FX = {};
     }
 
 });
+})
